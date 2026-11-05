@@ -1,19 +1,27 @@
-from flask import Flask
-from .extensions import db, appbuilder
 
-def create_app() -> Flask:
+from flask import Flask
+
+from .extensions import db, appbuilder, csrf
+
+
+def create_app():
+
     app = Flask(__name__)
+
     app.config.from_object("config")
 
     db.init_app(app)
 
+    csrf.init_app(app)
+
     with app.app_context():
-        # Importar explícitamente las clases para registrar el metadata en SQLAlchemy
-        from app.models import Categoria, Proveedor, Producto, Cliente, Venta, DetalleVenta  # noqa: F401
+
+        from . import models
+
+        appbuilder.init_app(app, db.session)
 
         db.create_all()
 
-        appbuilder.init_app(app, db.session)
-        from . import views  # noqa: F401
+        from . import views
 
     return app

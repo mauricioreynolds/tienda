@@ -1,24 +1,50 @@
+
 from app import create_app
+
 from app.extensions import db, appbuilder
-from app.models import Categoria, Proveedor, Producto, Cliente, Venta, DetalleVenta
+
 
 app = create_app()
 
+
 with app.app_context():
+
+
     db.create_all()
-    
+
+
     role_admin = appbuilder.sm.find_role("Admin")
 
-    user = appbuilder.sm.find_user(username="admin")
-    if not user:
-        appbuilder.sm.add_user(
-            username="admin",
-            first_name="Admin",
-            last_name="Tienda",
-            email="admin@tienda.com",
-            role=role_admin,
-            password="admin"
+    if not role_admin:
+        print(
+            "No se encontro el rol Admin. "
+            "Verifica la inicializacion de seguridad."
         )
-        print("Usuario admin creado exitosamente.")
+
     else:
-        print("Tablas creadas en MySQL exitosamente.")
+
+        user = appbuilder.sm.find_user(
+            username="admin"
+        )
+
+        if not user:
+
+            appbuilder.sm.add_user(
+                username="admin",
+                first_name="Admin",
+                last_name="Tienda",
+                email="admin@tienda.com",
+                role=role_admin,
+                password="admin"
+            )
+
+            print(
+                "Usuario administrador creado correctamente."
+            )
+
+        else:
+
+            print(
+                "El administrador ya existe. "
+                "Base de datos verificada."
+            )

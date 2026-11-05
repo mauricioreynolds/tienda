@@ -1,0 +1,379 @@
+
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2>
+        <i class="fa fa-shopping-cart"></i>
+        Carrito de Compras
+    </h2>
+
+    <hr>
+
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h3 class="panel-title">Agregar productos</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <form method="POST"
+                  action="{{ url_for('VentaCarritoView.carrito') }}"
+                  class="form-inline">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <input type="hidden"
+                       name="accion"
+                       value="agregar">
+
+                <div class="form-group"
+                     style="margin-right:15px;">
+
+                    <label>Producto</label>
+
+                    <select name="producto_id"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Seleccionar producto
+                        </option>
+
+                        {% for producto in productos %}
+
+                            <option value="{{ producto.id }}"
+                                {% if producto.stock_actual <= 0 %}
+                                    disabled
+                                {% endif %}>
+
+                                {{ producto.nombre }}
+                                | Bs {{ "%.2f"|format(producto.precio_venta) }}
+                                | Stock: {{ producto.stock_actual }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="form-group"
+                     style="margin-right:15px;">
+
+                    <label>Cantidad</label>
+
+                    <input type="number"
+                           name="cantidad"
+                           class="form-control"
+                           min="1"
+                           value="1"
+                           required>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="fa fa-plus"></i>
+                    Agregar al carrito
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+
+            <h3 class="panel-title">
+                <i class="fa fa-shopping-basket"></i>
+                Detalle de productos seleccionados
+            </h3>
+
+        </div>
+
+        <div class="panel-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio unitario</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in items %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ item.producto.nombre }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                Bs {{ "%.2f"|format(item.precio) }}
+                            </td>
+
+                            <td>
+
+                                <form method="POST"
+                                      action="{{ url_for('VentaCarritoView.carrito') }}"
+                                      class="form-inline">
+
+                                    <input type="hidden"
+                                           name="csrf_token"
+                                           value="{{ csrf_token() }}">
+
+                                    <input type="hidden"
+                                           name="accion"
+                                           value="actualizar">
+
+                                    <input type="hidden"
+                                           name="producto_id"
+                                           value="{{ item.producto.id }}">
+
+                                    <input type="number"
+                                           name="cantidad"
+                                           min="1"
+                                           value="{{ item.cantidad }}"
+                                           class="form-control"
+                                           style="width:80px;"
+                                           required>
+
+                                    <button type="submit"
+                                            class="btn btn-info btn-sm">
+
+                                        <i class="fa fa-refresh"></i>
+                                        Actualizar
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                            <td>
+                                <strong>
+                                    Bs {{ "%.2f"|format(item.subtotal) }}
+                                </strong>
+                            </td>
+
+                            <td>
+
+                                <form method="POST"
+                                      action="{{ url_for('VentaCarritoView.carrito') }}">
+
+                                    <input type="hidden"
+                                           name="csrf_token"
+                                           value="{{ csrf_token() }}">
+
+                                    <input type="hidden"
+                                           name="accion"
+                                           value="eliminar">
+
+                                    <input type="hidden"
+                                           name="producto_id"
+                                           value="{{ item.producto.id }}">
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm">
+
+                                        <i class="fa fa-trash"></i>
+                                        Eliminar
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="text-center"
+                                style="padding:35px;">
+
+                                <i class="fa fa-shopping-cart fa-3x"
+                                   style="color:#bbb;"></i>
+
+                                <h4>Tu carrito está vacío</h4>
+
+                                <p>
+                                    Agrega productos para comenzar
+                                    una nueva venta.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    {% if items %}
+
+                    <form method="POST"
+                          action="{{ url_for('VentaCarritoView.carrito') }}">
+
+                        <input type="hidden"
+                               name="csrf_token"
+                               value="{{ csrf_token() }}">
+
+                        <input type="hidden"
+                               name="accion"
+                               value="vaciar">
+
+                        <button type="submit"
+                                class="btn btn-danger">
+
+                            <i class="fa fa-trash"></i>
+                            Vaciar carrito
+
+                        </button>
+
+                    </form>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 text-right">
+
+                    <h4>
+                        Total de unidades:
+                        <strong>{{ cantidad_total }}</strong>
+                    </h4>
+
+                    <h2 style="color:#218838;">
+
+                        TOTAL A PAGAR:
+
+                        Bs {{ "%.2f"|format(total) }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="panel panel-success">
+
+        <div class="panel-heading">
+
+            <h3 class="panel-title">
+                <i class="fa fa-check-circle"></i>
+                Finalizar compra
+            </h3>
+
+        </div>
+
+        <div class="panel-body">
+
+            <form method="POST"
+                  action="{{ url_for('VentaCarritoView.carrito') }}">
+
+                <input type="hidden"
+                       name="csrf_token"
+                       value="{{ csrf_token() }}">
+
+                <input type="hidden"
+                       name="accion"
+                       value="finalizar">
+
+                <div class="form-group">
+
+                    <label>Seleccionar cliente</label>
+
+                    <select name="cliente_id"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Seleccionar cliente
+                        </option>
+
+                        {% for cliente in clientes %}
+
+                            <option value="{{ cliente.id }}">
+
+                                {{ cliente.nombre }}
+                                - {{ cliente.nit_ci or 'Sin NIT/CI' }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="text-right">
+
+                    <button type="submit"
+                            class="btn btn-success btn-lg"
+                            {% if not items %}disabled{% endif %}>
+
+                        <i class="fa fa-shopping-cart"></i>
+
+                        FINALIZAR Y GUARDAR COMPRA
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

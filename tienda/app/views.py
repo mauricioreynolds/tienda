@@ -1,4 +1,6 @@
 
+from datetime import date, datetime, time, timedelta
+
 from flask import (
     request,
     redirect,
@@ -16,7 +18,11 @@ from flask_appbuilder import (
 
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 
+from sqlalchemy import func
+
 from .extensions import appbuilder, db
+
+from .ai_assistant import consultar_groq
 
 from .models import (
     Categoria,
@@ -125,8 +131,6 @@ class VentaCarritoView(BaseView):
 
             accion = request.form.get("accion")
 
-
-
             if accion == "agregar":
 
                 try:
@@ -197,8 +201,6 @@ class VentaCarritoView(BaseView):
                         "danger"
                     )
 
-
-
             elif accion == "actualizar":
 
                 try:
@@ -250,8 +252,6 @@ class VentaCarritoView(BaseView):
                         "danger"
                     )
 
-
-
             elif accion == "eliminar":
 
                 producto_id = request.form.get("producto_id")
@@ -267,8 +267,6 @@ class VentaCarritoView(BaseView):
                     "info"
                 )
 
-
-
             elif accion == "vaciar":
 
                 session.pop("carrito_compras", None)
@@ -279,8 +277,6 @@ class VentaCarritoView(BaseView):
                     "Carrito vaciado correctamente.",
                     "info"
                 )
-
-
 
             elif accion == "finalizar":
 
@@ -308,8 +304,6 @@ class VentaCarritoView(BaseView):
                     detalles_preparados = []
 
                     total_venta = 0.0
-
-
 
                     for producto_id in sorted(
                         carrito.keys(),
@@ -365,7 +359,6 @@ class VentaCarritoView(BaseView):
 
                         total_venta += subtotal
 
-
                     nueva_venta = Venta(
                         cliente=cliente,
                         monto_total=round(total_venta, 2)
@@ -374,7 +367,6 @@ class VentaCarritoView(BaseView):
                     db.session.add(nueva_venta)
 
                     db.session.flush()
-
 
                     for (
                         producto,
@@ -395,11 +387,9 @@ class VentaCarritoView(BaseView):
 
                         producto.stock_actual -= cantidad
 
-
                     db.session.commit()
 
                     venta_id = nueva_venta.id
-
 
                     session.pop("carrito_compras", None)
 
@@ -447,8 +437,6 @@ class VentaCarritoView(BaseView):
             return redirect(
                 url_for("VentaCarritoView.carrito")
             )
-
-
 
         productos = (
             db.session.query(Producto)
@@ -558,6 +546,232 @@ class ReporteDetallesView(ModelView):
 
 
 
+class AsistenteIAView(BaseView):
+
+    route_base = "/asistente-ia"
+
+    default_view = "chat"
+
+    @expose("/", methods=["GET", "POST"])
+    def chat(self):
+
+        mensajes = session.get("chat_mi_tienda", [])
+
+        if request.method == "POST":
+
+            pregunta = request.form.get(
+                "mensaje", ""
+            ).strip()
+
+            if not pregunta:
+                flash(
+                    "Escribe una pregunta.",
+                    "warning"
+                )
+
+                return redirect(
+                    url_for("AsistenteIAView.chat")
+                )
+
+            try:
+
+                hoy = date.today()
+
+                inicio_hoy = datetime.combine(
+                    hoy,
+                    time.min
+                )
+
+                fin_hoy = inicio_hoy + timedelta(days=1)
+
+                inicio_mes = datetime(
+                    hoy.year,
+                    hoy.month,
+                    1
+                )
+
+                if hoy.month == 12:
+
+                    inicio_mes_siguiente = datetime(
+                        hoy.year + 1,
+                        1,
+                        1
+                    )
+
+                else:
+
+                    inicio_mes_siguiente = datetime(
+                        hoy.year,
+                        hoy.month + 1,
+                        1
+                    )
+
+                ventas_hoy = (
+                    db.session.query(
+                        func.coalesce(
+                            func.sum(Venta.monto_total), 0
+                        )
+                    )
+                    .filter(
+                        Venta.fecha >= inicio_hoy,
+                        Venta.fecha < fin_hoy
+                    )
+                    .scalar()
+                )
+
+                ventas_mes = (
+                    db.session.query(
+                        func.coalesce(
+                            func.sum(Venta.monto_total), 0
+                        )
+                    )
+                    .filter(
+                        Venta.fecha >= inicio_mes,
+                        Venta.fecha < inicio_mes_siguiente
+                    )
+                    .scalar()
+                )
+
+                cantidad_ventas = (
+                    db.session.query(Venta).count()
+                )
+
+                productos = (
+                    db.session.query(Producto)
+                    .order_by(Producto.stock_actual.asc())
+                    .limit(30)
+                    .all()
+                )
+
+                inventario = [
+                    {
+                        "producto": p.nombre,
+                        "stock": p.stock_actual,
+                        "precio_compra": float(p.precio_compra),
+                        "precio_venta": float(p.precio_venta)
+                    }
+                    for p in productos
+                ]
+
+                mas_vendidos = (
+                    db.session.query(
+                        Producto.nombre,
+                        func.sum(
+                            DetalleVenta.cantidad
+                        ).label("cantidad")
+                    )
+                    .join(
+                        DetalleVenta,
+                        DetalleVenta.producto_id == Producto.id
+                    )
+                    .group_by(
+                        Producto.id,
+                        Producto.nombre
+                    )
+                    .order_by(
+                        func.sum(
+                            DetalleVenta.cantidad
+                        ).desc()
+                    )
+                    .limit(5)
+                    .all()
+                )
+
+                resumen = f"""
+INFORMACIÓN REAL DE MI TIENDA:
+
+Fecha actual: {hoy}
+
+Ventas de hoy: Bs {float(ventas_hoy):.2f}
+
+Ventas del mes: Bs {float(ventas_mes):.2f}
+
+Cantidad total de ventas registradas: {cantidad_ventas}
+
+INVENTARIO:
+{inventario}
+
+PRODUCTOS MÁS VENDIDOS:
+{[
+    {
+        "producto": nombre,
+        "unidades_vendidas": int(cantidad)
+    }
+    for nombre, cantidad in mas_vendidos
+]}
+"""
+
+                historial = [
+                    {
+                        "role": "system",
+                        "content": (
+                            "Eres el asistente inteligente de Mi Tienda, "
+                            "un micromercado. Responde en español, "
+                            "de forma clara, breve y sencilla. "
+                            "Utiliza los datos reales proporcionados "
+                            "para responder preguntas sobre ventas, "
+                            "inventario y productos. "
+                            "No inventes cifras. "
+                            "Si no tienes información suficiente, "
+                            "dilo claramente. "
+                            "Tu función es exclusivamente de consulta. "
+                            "No puedes registrar, modificar ni eliminar "
+                            "información de la base de datos."
+                        )
+                    },
+                    {
+                        "role": "system",
+                        "content": resumen
+                    }
+                ]
+
+                historial.extend(mensajes[-10:])
+
+                historial.append({
+                    "role": "user",
+                    "content": pregunta
+                })
+
+                respuesta = consultar_groq(historial)
+
+                mensajes.append({
+                    "role": "user",
+                    "content": pregunta
+                })
+
+                mensajes.append({
+                    "role": "assistant",
+                    "content": respuesta
+                })
+
+                session["chat_mi_tienda"] = mensajes[-12:]
+
+                session.modified = True
+
+            except Exception:
+
+                current_app.logger.exception(
+                    "Error en el asistente IA"
+                )
+
+                flash(
+                    "No se pudo obtener una respuesta. "
+                    "Intenta nuevamente.",
+                    "danger"
+                )
+
+            return redirect(
+                url_for("AsistenteIAView.chat")
+            )
+
+        return self.render_template(
+            "asistente_ia.html",
+            mensajes=mensajes
+        )
+
+
+
+
 appbuilder.add_view(
     CategoriaModelView,
     "Categorías",
@@ -586,8 +800,6 @@ appbuilder.add_view(
     category="Gestión Tienda"
 )
 
-
-
 appbuilder.add_view(
     VentaCarritoView,
     "Realizar Venta",
@@ -607,5 +819,12 @@ appbuilder.add_view(
     ReporteDetallesView,
     "Reporte de Ventas",
     icon="fa-file-text",
+    category="Gestión Tienda"
+)
+
+appbuilder.add_view(
+    AsistenteIAView,
+    "Asistente IA",
+    icon="fa-comments",
     category="Gestión Tienda"
 )

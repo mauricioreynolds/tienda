@@ -1,0 +1,422 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- BIENVENIDA -->
+    <div class="dashboard-hero">
+        <div>
+            <span class="dashboard-eyebrow">PANEL DE ADMINISTRACIÓN</span>
+            <h1>¡Bienvenido a Mi Tienda!</h1>
+            <p>
+                Administra tu micromercado y consulta el estado
+                de tu negocio desde un solo lugar.
+            </p>
+            <div class="dashboard-date">
+                <i class="fa fa-calendar"></i>
+                {{ fecha_actual.strftime("%d/%m/%Y") }}
+            </div>
+        </div>
+
+        <div class="hero-icon">
+            <i class="fa fa-shopping-basket"></i>
+        </div>
+    </div>
+
+
+    <!-- ESTADÍSTICAS -->
+    <div class="dashboard-section-title">
+        <h2>Resumen de tu negocio</h2>
+        <p>Información actualizada desde tu base de datos.</p>
+    </div>
+
+    <div class="row dashboard-stats">
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card stat-green">
+                <div class="stat-icon">
+                    <i class="fa fa-money"></i>
+                </div>
+                <div class="stat-info">
+                    <span>Ventas de hoy</span>
+                    <h3>Bs {{ "%.2f"|format(ventas_hoy) }}</h3>
+                    <small>Ingresos del día</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card stat-blue">
+                <div class="stat-icon">
+                    <i class="fa fa-line-chart"></i>
+                </div>
+                <div class="stat-info">
+                    <span>Ventas del mes</span>
+                    <h3>Bs {{ "%.2f"|format(ventas_mes) }}</h3>
+                    <small>Ingresos mensuales</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card stat-orange">
+                <div class="stat-icon">
+                    <i class="fa fa-cubes"></i>
+                </div>
+                <div class="stat-info">
+                    <span>Productos</span>
+                    <h3>{{ total_productos }}</h3>
+                    <small>Productos registrados</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card stat-purple">
+                <div class="stat-icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <span>Clientes</span>
+                    <h3>{{ total_clientes }}</h3>
+                    <small>Clientes registrados</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ACCESOS RAPIDOS -->
+    <div class="dashboard-section-title">
+        <h2>Accesos rápidos</h2>
+        <p>Entra directamente a las funciones principales.</p>
+    </div>
+
+    <div class="row quick-access">
+
+        <div class="col-lg-3 col-sm-6">
+            <a href="{{ url_for('VentaCarritoView.carrito') }}"
+               class="quick-card">
+                <div class="quick-icon quick-green">
+                    <i class="fa fa-shopping-cart"></i>
+                </div>
+                <div>
+                    <h4>Realizar venta</h4>
+                    <p>Registrar una nueva venta</p>
+                </div>
+                <i class="fa fa-angle-right quick-arrow"></i>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <a href="{{ url_for('ProductoModelView.list') }}"
+               class="quick-card">
+                <div class="quick-icon quick-blue">
+                    <i class="fa fa-cube"></i>
+                </div>
+                <div>
+                    <h4>Productos</h4>
+                    <p>Administrar inventario</p>
+                </div>
+                <i class="fa fa-angle-right quick-arrow"></i>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <a href="{{ url_for('ClienteModelView.list') }}"
+               class="quick-card">
+                <div class="quick-icon quick-orange">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div>
+                    <h4>Clientes</h4>
+                    <p>Administrar clientes</p>
+                </div>
+                <i class="fa fa-angle-right quick-arrow"></i>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <a href="{{ url_for('AsistenteIAView.chat') }}"
+               class="quick-card">
+                <div class="quick-icon quick-purple">
+                    <i class="fa fa-comments"></i>
+                </div>
+                <div>
+                    <h4>Asistente IA</h4>
+                    <p>Consultar tu negocio</p>
+                </div>
+                <i class="fa fa-angle-right quick-arrow"></i>
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- GRAFICO Y STOCK -->
+    <div class="row dashboard-bottom">
+
+        <div class="col-lg-7">
+            <div class="dashboard-panel">
+
+                <div class="dashboard-panel-heading">
+                    <div>
+                        <h3>Ventas de los últimos 7 días</h3>
+                        <p>Comportamiento de tus ventas</p>
+                    </div>
+                    <span class="panel-heading-icon">
+                        <i class="fa fa-bar-chart"></i>
+                    </span>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="ventasChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-5">
+            <div class="dashboard-panel">
+
+                <div class="dashboard-panel-heading">
+                    <div>
+                        <h3>Stock bajo</h3>
+                        <p>Productos que necesitan reposición</p>
+                    </div>
+                    <span class="stock-counter">
+                        {{ cantidad_stock_bajo }}
+                    </span>
+                </div>
+
+                <div class="stock-list">
+
+                    {% if productos_bajos %}
+
+                        {% for producto in productos_bajos %}
+
+                            <div class="stock-item">
+                                <div class="stock-product-icon">
+                                    <i class="fa fa-cube"></i>
+                                </div>
+
+                                <div class="stock-product-info">
+                                    <strong>{{ producto.nombre }}</strong>
+                                    <small>Existencias disponibles</small>
+                                </div>
+
+                                <span class="stock-number
+                                    {% if producto.stock_actual == 0 %}
+                                        stock-zero
+                                    {% else %}
+                                        stock-low
+                                    {% endif %}">
+                                    {{ producto.stock_actual }}
+                                </span>
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="empty-stock">
+                            <i class="fa fa-check-circle"></i>
+                            <p>¡Todo bien! No hay productos con stock bajo.</p>
+                        </div>
+
+                    {% endif %}
+
+                    <a href="{{ url_for('ProductoModelView.list') }}"
+                       class="stock-link">
+                        Ver inventario completo
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ULTIMAS VENTAS -->
+    <div class="dashboard-panel recent-sales-panel">
+
+        <div class="dashboard-panel-heading">
+            <div>
+                <h3>Últimas ventas</h3>
+                <p>Movimientos recientes de tu negocio</p>
+            </div>
+
+            <a href="{{ url_for('VentaHistorialView.list') }}"
+               class="view-all-link">
+                Ver todas
+                <i class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table dashboard-table">
+
+                <thead>
+                    <tr>
+                        <th>N.º Venta</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% if ultimas_ventas %}
+
+                        {% for venta in ultimas_ventas %}
+
+                            <tr>
+                                <td>
+                                    <strong>#{{ venta.id }}</strong>
+                                </td>
+
+                                <td>
+                                    {{ venta.fecha.strftime("%d/%m/%Y %H:%M") }}
+                                </td>
+
+                                <td>
+                                    {{ venta.cliente.nombre if venta.cliente else "Sin cliente" }}
+                                </td>
+
+                                <td class="sale-total">
+                                    Bs {{ "%.2f"|format(venta.monto_total) }}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="4" class="empty-sales">
+                                Todavía no hay ventas registradas.
+                            </td>
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- PIE DEL PANEL -->
+    <div class="dashboard-footer">
+        <i class="fa fa-shopping-basket"></i>
+        <span>Mi Tienda - Sistema de gestión de micromercado</span>
+    </div>
+
+</div>
+
+
+<!-- GRAFICO -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const elemento = document.getElementById("ventasChart");
+
+    if (!elemento || typeof Chart === "undefined") {
+        return;
+    }
+
+    const etiquetas = {{ etiquetas_grafico | tojson }};
+    const valores = {{ valores_grafico | tojson }};
+
+    new Chart(elemento, {
+
+        type: "line",
+
+        data: {
+            labels: etiquetas,
+
+            datasets: [{
+                label: "Ventas en Bs",
+                data: valores,
+
+                borderColor: "#176b5b",
+                backgroundColor: "rgba(23, 107, 91, 0.12)",
+
+                borderWidth: 3,
+                fill: true,
+                tension: 0.35,
+
+                pointBackgroundColor: "#176b5b",
+                pointBorderColor: "#ffffff",
+                pointBorderWidth: 2,
+                pointRadius: 5
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return "Bs " +
+                                Number(context.raw).toFixed(2);
+                        }
+                    }
+                }
+            },
+
+            scales: {
+
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        callback: function(value) {
+                            return "Bs " + value;
+                        }
+                    },
+
+                    grid: {
+                        color: "#edf1ee"
+                    }
+                },
+
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

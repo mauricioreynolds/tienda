@@ -1,0 +1,142 @@
+
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+
+<div class="container" style="max-width: 950px; margin: 30px auto;">
+
+    <div style="margin-bottom: 25px;">
+        <h2>
+            <i class="fa fa-comments"></i>
+            Asistente IA
+        </h2>
+
+        <p>
+            Tu asistente inteligente para consultar información de Mi Tienda.
+        </p>
+    </div>
+
+    <div style="
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 22px;
+        min-height: 400px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    ">
+
+        {% if mensajes %}
+
+            {% for mensaje in mensajes %}
+
+                <div style="
+                    margin-bottom: 18px;
+                    padding: 15px;
+                    border-radius: 10px;
+                    background: {{ '#e5f5eb' if mensaje.role == 'user' else '#f1f3f5' }};
+                ">
+
+                    <strong>
+                        {% if mensaje.role == 'user' %}
+                            <i class="fa fa-user"></i> Tú
+                        {% else %}
+                            <i class="fa fa-robot"></i> Asistente IA
+                        {% endif %}
+                    </strong>
+
+                    <p style="
+                        white-space: pre-wrap;
+                        margin-top: 10px;
+                        margin-bottom: 0;
+                        line-height: 1.6;
+                    ">{{ mensaje.content }}</p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div style="
+                text-align: center;
+                padding: 75px 15px;
+            ">
+
+                <i class="fa fa-robot fa-4x"
+                   style="color: #159b83;"></i>
+
+                <h3>¡Hola! Soy tu asistente de Mi Tienda.</h3>
+
+                <p>
+                    Estoy listo para ayudarte a consultar
+                    tus ventas, productos e inventario.
+                </p>
+
+                <p style="color: #777;">
+                    Prueba preguntándome: ¿Cuánto vendí este mes?
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <form method="POST">
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <div style="
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        ">
+
+            <input
+                type="text"
+                name="mensaje"
+                class="form-control"
+                placeholder="Escribe tu pregunta aquí..."
+                required
+                autocomplete="off"
+                style="
+                    height: 48px;
+                    border-radius: 8px;
+                "
+            >
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                style="
+                    height: 48px;
+                    border-radius: 8px;
+                    padding: 0 22px;
+                "
+            >
+                <i class="fa fa-paper-plane"></i>
+                Enviar
+            </button>
+
+        </div>
+
+    </form>
+
+    <p style="
+        text-align: center;
+        color: #888;
+        margin-top: 15px;
+        font-size: 12px;
+    ">
+        El asistente consulta información de tu tienda.
+        No modifica tus registros.
+    </p>
+
+</div>
+
+{% endblock %}

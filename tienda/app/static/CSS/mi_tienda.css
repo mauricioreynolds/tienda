@@ -510,3 +510,523 @@ footer {
 .navbar .navbar-brand a:hover::after {
     color: #bcebd8;
 }
+
+/* =========================================
+   PANEL PRINCIPAL - MI TIENDA
+========================================= */
+
+.dashboard-container {
+    padding: 15px 8px 30px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.dashboard-hero {
+    background: linear-gradient(120deg, #105447, #21836e);
+    color: white;
+    border-radius: 16px;
+    padding: 35px 40px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 25px rgba(16, 84, 71, .15);
+}
+
+.dashboard-hero h1 {
+    color: white !important;
+    font-size: 30px;
+    font-weight: 750;
+    margin: 12px 0 8px;
+}
+
+.dashboard-hero p {
+    color: #e0f2eb;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.dashboard-eyebrow {
+    color: #bcebd8;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+}
+
+.dashboard-date {
+    color: #ffffff;
+    font-size: 13px;
+    opacity: .9;
+}
+
+.dashboard-date i {
+    margin-right: 6px;
+}
+
+.hero-icon {
+    width: 105px;
+    height: 105px;
+    border-radius: 25px;
+    background: rgba(255,255,255,.13);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 52px;
+    color: white;
+}
+
+.dashboard-section-title {
+    margin: 27px 0 16px;
+}
+
+.dashboard-section-title h2 {
+    font-size: 20px;
+    font-weight: 750;
+    margin: 0 0 5px;
+}
+
+.dashboard-section-title p {
+    color: #778780;
+    margin: 0;
+    font-size: 13px;
+}
+
+
+/* TARJETAS DE ESTADISTICAS */
+
+.dashboard-stats {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dashboard-stats > div {
+    margin-bottom: 15px;
+}
+
+.stat-card {
+    min-height: 125px;
+    padding: 20px 17px;
+    background: white;
+    border: 1px solid #e5ebe8;
+    border-radius: 13px;
+    box-shadow: 0 4px 16px rgba(30, 60, 50, .05);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(30, 60, 50, .10);
+}
+
+.stat-icon {
+    width: 53px;
+    height: 53px;
+    min-width: 53px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+.stat-green .stat-icon {
+    background: #e6f4ed;
+    color: #176b5b;
+}
+
+.stat-blue .stat-icon {
+    background: #e8f1fc;
+    color: #3478bd;
+}
+
+.stat-orange .stat-icon {
+    background: #fff2df;
+    color: #d58a26;
+}
+
+.stat-purple .stat-icon {
+    background: #f1eafd;
+    color: #8660b8;
+}
+
+.stat-info {
+    min-width: 0;
+}
+
+.stat-info span {
+    display: block;
+    color: #778780;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.stat-info h3 {
+    font-size: 21px;
+    color: #263b36;
+    font-weight: 800;
+    margin: 5px 0;
+    overflow-wrap: anywhere;
+}
+
+.stat-info small {
+    color: #9aa59f;
+    font-size: 11px;
+}
+
+
+/* ACCESOS RAPIDOS */
+
+.quick-access > div {
+    margin-bottom: 15px;
+}
+
+.quick-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 95px;
+    padding: 17px;
+    background: white;
+    border: 1px solid #e5ebe8;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(30, 60, 50, .04);
+    text-decoration: none !important;
+    transition: all .2s ease;
+}
+
+.quick-card:hover {
+    transform: translateY(-3px);
+    border-color: #b6d9cb;
+    box-shadow: 0 8px 20px rgba(30, 60, 50, .09);
+}
+
+.quick-icon {
+    width: 47px;
+    height: 47px;
+    min-width: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 20px;
+}
+
+.quick-green {
+    background: #e6f4ed;
+    color: #176b5b;
+}
+
+.quick-blue {
+    background: #e8f1fc;
+    color: #3478bd;
+}
+
+.quick-orange {
+    background: #fff2df;
+    color: #d58a26;
+}
+
+.quick-purple {
+    background: #f1eafd;
+    color: #8660b8;
+}
+
+.quick-card h4 {
+    color: #263b36;
+    font-size: 14px;
+    font-weight: 750;
+    margin: 0 0 5px;
+}
+
+.quick-card p {
+    color: #89968f;
+    font-size: 11px;
+    margin: 0;
+}
+
+.quick-arrow {
+    margin-left: auto;
+    color: #a5b3ac;
+    font-size: 20px;
+}
+
+
+/* PANELES */
+
+.dashboard-bottom {
+    margin-top: 12px;
+}
+
+.dashboard-bottom > div {
+    margin-bottom: 20px;
+}
+
+.dashboard-panel {
+    height: 100%;
+    background: white;
+    border: 1px solid #e5ebe8;
+    border-radius: 13px;
+    box-shadow: 0 4px 16px rgba(30, 60, 50, .05);
+    overflow: hidden;
+}
+
+.dashboard-panel-heading {
+    padding: 19px 21px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #edf1ee;
+}
+
+.dashboard-panel-heading h3 {
+    font-size: 15px;
+    font-weight: 750;
+    margin: 0 0 5px;
+}
+
+.dashboard-panel-heading p {
+    color: #89968f;
+    font-size: 11px;
+    margin: 0;
+}
+
+.panel-heading-icon {
+    width: 37px;
+    height: 37px;
+    border-radius: 10px;
+    background: #e8f3ef;
+    color: #176b5b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.chart-container {
+    height: 290px;
+    padding: 20px;
+}
+
+
+/* STOCK */
+
+.stock-counter {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: #fff1e8;
+    color: #d36a31;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.stock-list {
+    padding: 10px 18px 16px;
+}
+
+.stock-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0f3f1;
+}
+
+.stock-product-icon {
+    width: 37px;
+    height: 37px;
+    border-radius: 10px;
+    background: #f0f5f2;
+    color: #176b5b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stock-product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.stock-product-info strong {
+    display: block;
+    color: #344940;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.stock-product-info small {
+    display: block;
+    color: #98a39d;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.stock-number {
+    min-width: 30px;
+    text-align: center;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.stock-low {
+    background: #fff3df;
+    color: #bd8126;
+}
+
+.stock-zero {
+    background: #fbe9e8;
+    color: #c54843;
+}
+
+.stock-link {
+    display: block;
+    text-align: center;
+    padding: 13px 5px 4px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.stock-link i {
+    margin-left: 5px;
+}
+
+.empty-stock {
+    text-align: center;
+    padding: 30px 10px;
+    color: #176b5b;
+}
+
+.empty-stock i {
+    font-size: 30px;
+}
+
+.empty-stock p {
+    color: #778780;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+
+/* ULTIMAS VENTAS */
+
+.recent-sales-panel {
+    margin-top: 5px;
+}
+
+.view-all-link {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.dashboard-table {
+    margin: 0;
+    border: none;
+}
+
+.dashboard-table > thead > tr > th {
+    background: #f7faf8 !important;
+    font-size: 11px;
+}
+
+.dashboard-table > tbody > tr > td {
+    font-size: 12px;
+}
+
+.sale-total {
+    color: #176b5b !important;
+    font-weight: 800;
+}
+
+.empty-sales {
+    text-align: center;
+    color: #89968f !important;
+    padding: 25px !important;
+}
+
+.dashboard-footer {
+    text-align: center;
+    color: #94a19a;
+    font-size: 11px;
+    padding: 25px 10px 5px;
+}
+
+.dashboard-footer i {
+    color: #176b5b;
+    margin-right: 5px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .dashboard-container {
+        padding: 8px 2px 20px;
+    }
+
+    .dashboard-hero {
+        padding: 25px 20px;
+        border-radius: 12px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 23px;
+    }
+
+    .hero-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 30px;
+        border-radius: 16px;
+    }
+
+    .stat-card {
+        min-height: 105px;
+        padding: 14px 12px;
+    }
+
+    .stat-info h3 {
+        font-size: 18px;
+    }
+
+    .chart-container {
+        height: 250px;
+        padding: 12px;
+    }
+
+    .dashboard-panel-heading {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .hero-icon {
+        display: none;
+    }
+
+    .dashboard-hero {
+        padding: 23px 18px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 21px;
+    }
+
+    .quick-card {
+        min-height: 82px;
+        padding: 12px;
+    }
+
+    .dashboard-panel-heading h3 {
+        font-size: 14px;
+    }
+}

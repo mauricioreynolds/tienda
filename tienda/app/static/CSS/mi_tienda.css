@@ -1,0 +1,512 @@
+
+
+:root {
+    --primary: #176b5b;
+    --primary-dark: #105447;
+    --primary-light: #e8f3ef;
+    --accent: #35a58b;
+    --background: #f5f7f8;
+    --surface: #ffffff;
+    --text: #263b36;
+    --muted: #778780;
+    --border: #e5ebe8;
+    --danger: #d9534f;
+    --warning: #e6a23c;
+    --shadow: 0 4px 16px rgba(30, 60, 50, .06);
+}
+
+
+
+html {
+    min-height: 100%;
+}
+
+body {
+    background: var(--background) !important;
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.container,
+.container-fluid {
+    color: var(--text);
+}
+
+a {
+    color: var(--primary);
+    transition: color .2s ease;
+}
+
+a:hover,
+a:focus {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+
+
+.navbar {
+    background: var(--primary-dark) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    min-height: 64px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+.navbar .navbar-brand {
+    color: white !important;
+    font-size: 21px;
+    font-weight: 750;
+    padding-top: 21px;
+}
+
+.navbar .navbar-nav > li > a {
+    color: #edf7f3 !important;
+    font-weight: 500;
+    padding-top: 22px;
+    padding-bottom: 22px;
+}
+
+.navbar .navbar-nav > li > a:hover,
+.navbar .navbar-nav > .active > a,
+.navbar .navbar-nav > .active > a:hover {
+    background: rgba(255,255,255,.10) !important;
+    color: white !important;
+}
+
+.navbar-toggle {
+    border-color: rgba(255,255,255,.5) !important;
+}
+
+.navbar-toggle .icon-bar {
+    background: white !important;
+}
+
+
+
+h1, h2, h3, h4, h5 {
+    color: var(--text);
+    font-weight: 650;
+}
+
+h1 {
+    font-size: 29px;
+    margin-top: 25px;
+}
+
+h2 {
+    font-size: 23px;
+}
+
+h3 {
+    font-size: 19px;
+}
+
+
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border) !important;
+    border-radius: 11px !important;
+    overflow: hidden;
+    box-shadow: var(--shadow) !important;
+}
+
+.panel-heading {
+    background: #f8faf9 !important;
+    color: var(--primary-dark) !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 15px 18px !important;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.panel-body {
+    padding: 20px;
+}
+
+.panel-footer {
+    background: #fafcfb !important;
+    border-top: 1px solid var(--border) !important;
+}
+
+
+
+.btn {
+    border-radius: 7px !important;
+    font-weight: 600;
+    padding: 7px 13px;
+    border-width: 1px;
+    transition: background .2s, transform .2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-success,
+.btn-primary {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+}
+
+.btn-success:hover,
+.btn-primary:hover {
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+.btn-info {
+    background: #e8f3ef !important;
+    border-color: #d5e8df !important;
+    color: var(--primary-dark) !important;
+}
+
+.btn-info:hover {
+    background: #d9ece4 !important;
+}
+
+.btn-warning {
+    background: #f0ad4e !important;
+    border-color: #e6a23c !important;
+    color: #fff !important;
+}
+
+.btn-danger {
+    background: #d9534f !important;
+    border-color: #d9534f !important;
+    color: white !important;
+}
+
+.btn-default {
+    background: white !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+}
+
+.btn-default:hover {
+    background: #f3f7f5 !important;
+}
+
+
+
+.form-control {
+    min-height: 39px;
+    border: 1px solid #dce5e0 !important;
+    border-radius: 7px !important;
+    background: white;
+    color: var(--text);
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(53,165,139,.12) !important;
+}
+
+label {
+    color: #40554d;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.input-group-addon {
+    background: #f1f6f3 !important;
+    color: var(--primary) !important;
+    border-color: var(--border) !important;
+}
+
+
+
+.table {
+    width: 100%;
+    background: white;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+
+
+.table > thead > tr > th {
+    background: #edf4f0 !important;
+    color: #31564a !important;
+    border-bottom: 1px solid #dce8e1 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    padding: 13px 12px !important;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .35px;
+    vertical-align: middle;
+}
+
+
+
+.table > tbody > tr > td {
+    background: white;
+    color: #43534c;
+    padding: 12px !important;
+    border-top: 1px solid #edf1ee !important;
+    border-left: none !important;
+    border-right: none !important;
+    vertical-align: middle !important;
+}
+
+
+
+.table-striped > tbody > tr:nth-of-type(odd) > td {
+    background: #fafcfb;
+}
+
+
+
+.table-hover > tbody > tr:hover > td {
+    background: #f0f7f3 !important;
+}
+
+
+
+.table-bordered {
+    border-color: var(--border) !important;
+}
+
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > td {
+    border-color: #e9efeb !important;
+}
+
+
+
+.pagination > li > a,
+.pagination > li > span {
+    color: var(--primary);
+    border-color: var(--border);
+}
+
+.pagination > .active > a,
+.pagination > .active > span {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+}
+
+.pagination > li > a:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+
+
+.dataTables_wrapper {
+    color: var(--text);
+    padding-top: 8px;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 9px;
+    background: white;
+    outline: none;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: var(--accent);
+}
+
+.dataTables_wrapper .dataTables_info {
+    color: var(--muted);
+    padding-top: 14px;
+}
+
+
+
+.alert {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 16px;
+}
+
+.alert-success {
+    background: #e8f5ed;
+    color: #236443;
+}
+
+.alert-danger {
+    background: #fbeaea;
+    color: #a53e3a;
+}
+
+.alert-warning {
+    background: #fff5e5;
+    color: #87601f;
+}
+
+.alert-info {
+    background: #eaf3f6;
+    color: #386477;
+}
+
+
+
+.breadcrumb {
+    background: transparent;
+    padding: 10px 0;
+    color: var(--muted);
+}
+
+hr {
+    border-top: 1px solid var(--border) !important;
+}
+
+
+
+body:has(input[name="username"]) {
+    background: linear-gradient(135deg, #edf4f0, #f7f9f8) !important;
+    min-height: 100vh;
+}
+
+body:has(input[name="username"]) .navbar {
+    background: var(--primary-dark) !important;
+}
+
+body:has(input[name="username"]) .panel {
+    max-width: 470px;
+    margin: 65px auto !important;
+    border: none !important;
+    border-radius: 15px !important;
+    overflow: hidden;
+    box-shadow: 0 14px 40px rgba(20,70,55,.12) !important;
+}
+
+body:has(input[name="username"]) .panel-heading {
+    background: var(--primary-dark) !important;
+    color: white !important;
+    padding: 20px 25px !important;
+    font-size: 20px;
+}
+
+body:has(input[name="username"]) .panel-body {
+    padding: 28px !important;
+}
+
+body:has(input[name="username"]) .panel-body p {
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+body:has(input[name="username"]) input.form-control {
+    height: 46px !important;
+    border-radius: 7px !important;
+}
+
+body:has(input[name="username"]) button[type="submit"],
+body:has(input[name="username"]) input[type="submit"],
+body:has(input[name="username"]) .btn-primary {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+    min-height: 46px;
+    border-radius: 8px !important;
+    font-weight: 700;
+}
+
+
+
+footer {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+
+
+@media (max-width: 768px) {
+
+    .container,
+    .container-fluid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .panel-body {
+        padding: 14px;
+    }
+
+    .table-responsive {
+        border: none;
+        margin-bottom: 15px;
+    }
+
+    .navbar-brand {
+        font-size: 18px !important;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    body:has(input[name="username"]) .panel {
+        margin: 35px 12px !important;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .btn {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    .table > thead > tr > th,
+    .table > tbody > tr > td {
+        padding: 9px !important;
+    }
+
+    body:has(input[name="username"]) .panel-body {
+        padding: 20px !important;
+    }
+}
+
+
+
+
+
+.navbar .navbar-brand {
+    padding: 10px 15px !important;
+    display: inline-block !important;
+    cursor: pointer;
+}
+
+
+.navbar .navbar-brand a {
+    display: inline-block !important;
+    font-size: 0 !important;
+    color: transparent !important;
+    text-decoration: none !important;
+}
+
+
+.navbar .navbar-brand a::after {
+    content: "🛒 Mi Tienda";
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    display: inline-block;
+    transition: color 0.2s ease;
+}
+
+
+.navbar .navbar-brand a:hover::after {
+    color: #bcebd8;
+}

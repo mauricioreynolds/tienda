@@ -1,7 +1,40 @@
+
 {% extends "appbuilder/base.html" %}
 
 {% block content %}
-<h2 style="text-align: center;">{{_('Page not found')}}</h2>
+
+<div class="container" style="padding-top: 65px; padding-bottom: 65px;">
+
+    <div class="text-center"
+         style="background: white; padding: 55px 25px; border-radius: 18px; box-shadow: 0 5px 25px rgba(0,0,0,0.07);">
+
+        <div style="font-size: 75px; color: #198754;">
+            <i class="fa fa-shopping-basket"></i>
+        </div>
+
+        <h1 style="font-size: 85px; font-weight: bold; color: #198754;">
+            404
+        </h1>
+
+        <h2 style="font-weight: bold; color: #263b32;">
+            ¡Ups! Página no encontrada
+        </h2>
+
+        <p style="font-size: 16px; color: #777; margin: 20px 0 30px;">
+            Parece que el producto o la página que buscas
+            no se encuentra disponible.
+        </p>
+
+        <a href="{{ url_for('IndexView.index') }}"
+           class="btn btn-success btn-lg">
+
+            <i class="fa fa-home"></i>
+            Volver a Mi Tienda
+
+        </a>
+
+    </div>
+
+</div>
+
 {% endblock %}
-
-
